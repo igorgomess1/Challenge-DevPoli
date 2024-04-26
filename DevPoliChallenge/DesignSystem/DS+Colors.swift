@@ -1,11 +1,3 @@
-//
-//  DS+Colors.swift
-//  DevPoliChallenge
-//
-//  Created by DevPoli on 29/07/23.
-//  Copyright © 2023 DevPoli. All rights reserved.
-//
-
 import UIKit
 
 extension DesignSystem {
@@ -16,5 +8,8 @@ extension DesignSystem {
         static let tertiary: UIColor = .init(hex: "#2196F3")
         static let accent: UIColor = .init(hex: "#FFA726")
         static let background: UIColor = .init(hex: "#FFFFFF")
+        static let gainsboro: UIColor = .init(hex: "#DCDCDC")
+        static let silver: UIColor = .init(hex: "#C0C0C0")
+        static let lightWhite: UIColor = .init(hex: "#F1EBEB")
     }
 }
