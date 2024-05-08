@@ -39,6 +39,7 @@
 		358714782BB0CB43001C45A5 /* SignInPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInPresenter.swift; sourceTree = "<group>"; };
 		3587147A2BB0CB56001C45A5 /* SignInCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInCoordinator.swift; sourceTree = "<group>"; };
 		3587147C2BB0CC5E001C45A5 /* SignInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
+		3595E5212BDBFB7100B665B9 /* DevPoliChallenge.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = DevPoliChallenge.entitlements; sourceTree = "<group>"; };
 		35B1ED4A2BB8AC8E00048E47 /* SignUpFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpFactory.swift; sourceTree = "<group>"; };
 		35B1ED4C2BB8ACA100048E47 /* SignUpPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpPresenter.swift; sourceTree = "<group>"; };
 		35B1ED4E2BB8ACB000048E47 /* SignUpInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpInteractor.swift; sourceTree = "<group>"; };
@@ -176,6 +177,7 @@
 		4C3862A22A758819005C9C3B /* DevPoliChallenge */ = {
 			isa = PBXGroup;
 			children = (
+				3595E5212BDBFB7100B665B9 /* DevPoliChallenge.entitlements */,
 				35C8EF342BDB4CF8007B2DBD /* Common */,
 				4C33FF2F2A75A3810002E765 /* DesignSystem */,
 				4C33FF2C2A75A2560002E765 /* Utils */,
@@ -498,6 +500,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
+				CODE_SIGN_ENTITLEMENTS = DevPoliChallenge/DevPoliChallenge.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 2023;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -530,6 +533,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
+				CODE_SIGN_ENTITLEMENTS = DevPoliChallenge/DevPoliChallenge.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 2023;
 				GENERATE_INFOPLIST_FILE = YES;

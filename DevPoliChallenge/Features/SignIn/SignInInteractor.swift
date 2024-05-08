@@ -1,7 +1,14 @@
+import AuthenticationServices
+
 protocol SignInInteracting {
     func login(email: String, password: String)
     func openSignUp()
     func checkErrosTexField(isValid: Bool, bitmask: Int)
+    func facebookLogin()
+    func handleAuthorization(
+        controller: ASAuthorizationController,
+        didCompleteWithAuthorization authorization: ASAuthorization
+    )
 }
 final class SignInInteractor {
     private let presenter: SignInPresenting
@@ -41,6 +48,36 @@ extension SignInInteractor: SignInInteracting {
         (IdentifierTextField.email.rawValue & self.bistmaskResult != 0) &&
         (IdentifierTextField.password.rawValue & self.bistmaskResult != 0)
         )
+    }
+    
+    func facebookLogin() {
+        service.loginWithFacebook { [weak self] result in
+            switch result {
+            case .success(let success):
+                let email = success.0
+                print(email)
+                self?.handledSuccess()
+            case .failure(let failure):
+                self?.handledFailure(error: failure)
+            }
+        }
+    }
+    
+    func handleAuthorization(
+        controller: ASAuthorizationController,
+        didCompleteWithAuthorization authorization: ASAuthorization
+    ) {
+        service.handleAuthorization(
+            controller: controller,
+            didCompleteWithAuthorization: authorization
+        ) { [weak self] result in
+            switch result {
+            case .success:
+                self?.handledSuccess()
+            case .failure(let error):
+                self?.handledFailure(error: error)
+            }
+        }
     }
 }
 

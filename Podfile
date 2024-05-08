@@ -11,4 +11,8 @@ target 'DevPoliChallenge' do
   pod 'FirebaseAuth'
   pod 'FirebaseFirestore'
 
+  pod 'FBSDKCoreKit'
+  pod 'FBSDKLoginKit'
+  pod 'FBSDKShareKit'
+
 end

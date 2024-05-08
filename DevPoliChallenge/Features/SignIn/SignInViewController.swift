@@ -1,5 +1,6 @@
 import UIKit
 import SnapKit
+import AuthenticationServices
 
 protocol SignInDisplaying: AnyObject {
     func setupAlert(title: String, message: String?)
@@ -228,17 +229,22 @@ private extension SignInViewController {
     
     @objc
     func openForgotPassword() {
-        print("esqueci a senha")
+        setupAlert(title: "Esqueceu a senha", message: nil)
     }
     
     @objc
     func openLoginWithFacebook() {
-        print("openLoginWithFacebook")
+        interactor.facebookLogin()
     }
     
     @objc
     func openLoginWithApple() {
-        print("openLoginWithApple")
+        let authorizationController = ASAuthorizationController(
+            authorizationRequests: [createAppleIDAuthorizationRequest()]
+        )
+        authorizationController.delegate = self
+        
+        authorizationController.performRequests()
     }
     
     @objc
@@ -258,7 +264,7 @@ private extension SignInViewController {
     func setupEmailTextField() -> UIView {
         let textFieldComponentView = TextFieldComponentView()
         textFieldComponentView.placeholder = "Email"
-        textFieldComponentView.errorMessage = "Email inválido"
+        textFieldComponentView.errorMessage = "Informe o e-mail para continuar"
         textFieldComponentView.bitmask = IdentifierTextField.email.rawValue
         textFieldComponentView.delegate = self
         
@@ -286,6 +292,21 @@ private extension SignInViewController {
         }
         
         return textFieldComponentView
+    }
+    
+    func createAppleIDAuthorizationRequest() -> ASAuthorizationAppleIDRequest {
+        let appleIDProvider = ASAuthorizationAppleIDProvider()
+        let request = appleIDProvider.createRequest()
+        request.requestedScopes = [.fullName, .email]
+        return request
+    }
+}
+
+extension SignInViewController: ASAuthorizationControllerPresentationContextProviding {
+    func presentationAnchor(for controller: ASAuthorizationController) -> ASPresentationAnchor {
+        guard let window = view.window else { return .init()}
+        
+        return window
     }
 }
 
@@ -450,5 +471,24 @@ extension SignInViewController: SignInDisplaying {
 extension SignInViewController: TextFieldComponentDelegate {
     func textFieldDidChanged(isValid: Bool, bitmask: Int) {
         interactor.checkErrosTexField(isValid: isValid, bitmask: bitmask)
+    }
+}
+
+extension SignInViewController: ASAuthorizationControllerDelegate {
+    func authorizationController(
+        controller: ASAuthorizationController,
+        didCompleteWithAuthorization authorization: ASAuthorization
+    ) {
+        handleAuthorization(controller: controller, didCompleteWithAuthorization: authorization)
+    }
+    
+    private func handleAuthorization(
+        controller: ASAuthorizationController,
+        didCompleteWithAuthorization authorization: ASAuthorization
+    ) {
+        interactor.handleAuthorization(
+            controller: controller,
+            didCompleteWithAuthorization: authorization
+        )
     }
 }

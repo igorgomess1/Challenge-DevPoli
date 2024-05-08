@@ -49,6 +49,10 @@ final class SignUpViewController: UIViewController {
             "Ao criar conta, você concorda com nosso termos e condições de uso",
             textToColor: "termos e condições de uso"
         )
+        
+        let tap = UITapGestureRecognizer(target: self, action: #selector(DidTapTermsAndConditions))
+        label.isUserInteractionEnabled = true
+        label.addGestureRecognizer(tap)
         return label
     }()
     
@@ -104,8 +108,14 @@ private extension SignUpViewController {
         navigationItem.title = "Criar Conta"
     }
     
-    @objc func dismissScreen() {
+    @objc
+    func dismissScreen() {
         dismiss(animated: true)
+    }
+    
+    @objc
+    func DidTapTermsAndConditions() {
+        setupAlert(title: "termos e condições de uso", message: nil)
     }
     
     @objc
@@ -163,7 +173,7 @@ private extension SignUpViewController {
     func setupPasswordTextField() -> UIView {
         let textFieldComponentView = TextFieldComponentView()
         textFieldComponentView.placeholder = "Senha"
-        textFieldComponentView.errorMessage = "A senha deve ter 6 caracteres ou mais"
+        textFieldComponentView.errorMessage = "A senha deve ter 5 caracteres ou mais"
         textFieldComponentView.isPassword = true
         textFieldComponentView.bitmask = IdentifierTextField.password.rawValue
         textFieldComponentView.delegate = self
@@ -171,7 +181,7 @@ private extension SignUpViewController {
         textFieldComponentView.validationRule = { inputText in
             guard let text = inputText else { return false}
             self.passwordText = text
-            return text.count <= 5 && !text.isEmpty
+            return text.count <= 6 && !text.isEmpty
         }
         
         return textFieldComponentView
