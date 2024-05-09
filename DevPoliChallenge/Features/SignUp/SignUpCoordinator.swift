@@ -11,6 +11,7 @@ final class SignUpCoordinator {
 extension SignUpCoordinator: SignUpCoordinating {
     func openWebView(url: URL) {
         let webViewViewController = WebViewViewController(url: url)
-        viewController?.present(webViewViewController, animated: true)
+        let navigationController = UINavigationController(rootViewController: webViewViewController)
+        viewController?.present(navigationController, animated: true)
     }
 }
