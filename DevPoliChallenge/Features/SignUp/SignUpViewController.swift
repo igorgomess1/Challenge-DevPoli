@@ -50,7 +50,7 @@ final class SignUpViewController: UIViewController {
             textToColor: "termos e condições de uso"
         )
         
-        let tap = UITapGestureRecognizer(target: self, action: #selector(DidTapTermsAndConditions))
+        let tap = UITapGestureRecognizer(target: self, action: #selector(didTapTermsAndConditions))
         label.isUserInteractionEnabled = true
         label.addGestureRecognizer(tap)
         return label
@@ -85,7 +85,7 @@ final class SignUpViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        setupNavigatioBar()
+        setupNavigationBar()
     }
 }
 
@@ -104,7 +104,7 @@ private extension SignUpViewController {
         return attributedString
     }
         
-    func setupNavigatioBar() {
+    func setupNavigationBar() {
         navigationItem.title = "Criar Conta"
     }
     
@@ -114,8 +114,8 @@ private extension SignUpViewController {
     }
     
     @objc
-    func DidTapTermsAndConditions() {
-        setupAlert(title: "termos e condições de uso", message: nil)
+    func didTapTermsAndConditions() {
+        interactor.openTermsAndConditionsWebView()
     }
     
     @objc
@@ -181,7 +181,7 @@ private extension SignUpViewController {
         textFieldComponentView.validationRule = { inputText in
             guard let text = inputText else { return false}
             self.passwordText = text
-            return text.count <= 6 && !text.isEmpty
+            return text.count < 5 && !text.isEmpty
         }
         
         return textFieldComponentView
