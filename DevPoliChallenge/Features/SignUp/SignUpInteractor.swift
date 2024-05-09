@@ -1,6 +1,9 @@
+import UIKit
+
 protocol SignUpInteracting {
     func createAccount(email: String, password: String)
     func checkErrosTexField(isValid: Bool, bitmask: Int)
+    func openTermsAndConditionsWebView()
 }
 
 final class SignUpInteractor {
@@ -41,6 +44,11 @@ extension SignUpInteractor: SignUpInteracting {
         (IdentifierTextField.password.rawValue & self.bistmaskResult != 0) &&
         (IdentifierTextField.validationPassword.rawValue & self.bistmaskResult != 0)
         )
+    }
+    
+    func openTermsAndConditionsWebView() {
+        guard let url = URL(string: "https://devpoli.com") else { return }
+        presenter.openWebView(url: url)
     }
 }
 

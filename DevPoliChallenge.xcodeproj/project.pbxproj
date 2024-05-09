@@ -24,6 +24,7 @@
 		35C66B5E2BC1E3F1007168AB /* TextFieldComponentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C66B5D2BC1E3F1007168AB /* TextFieldComponentView.swift */; };
 		35C8EF362BDB4D44007B2DBD /* IdentifierTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C8EF352BDB4D44007B2DBD /* IdentifierTextField.swift */; };
 		35D247D52BB3A57300933EC7 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 35D247D42BB3A57300933EC7 /* GoogleService-Info.plist */; };
+		35D561202BEC4E6D0038B84F /* WebViewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D5611F2BEC4E6D0038B84F /* WebViewViewController.swift */; };
 		4C33FF2E2A75A2640002E765 /* UIColor+ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C33FF2D2A75A2640002E765 /* UIColor+ext.swift */; };
 		4C33FF332A75A3F40002E765 /* DS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C33FF322A75A3F40002E765 /* DS.swift */; };
 		4C33FF352A75A4550002E765 /* DS+Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C33FF342A75A4550002E765 /* DS+Colors.swift */; };
@@ -51,6 +52,7 @@
 		35C66B5D2BC1E3F1007168AB /* TextFieldComponentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldComponentView.swift; sourceTree = "<group>"; };
 		35C8EF352BDB4D44007B2DBD /* IdentifierTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdentifierTextField.swift; sourceTree = "<group>"; };
 		35D247D42BB3A57300933EC7 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		35D5611F2BEC4E6D0038B84F /* WebViewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewViewController.swift; sourceTree = "<group>"; };
 		4C33FF2D2A75A2640002E765 /* UIColor+ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+ext.swift"; sourceTree = "<group>"; };
 		4C33FF322A75A3F40002E765 /* DS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DS.swift; sourceTree = "<group>"; };
 		4C33FF342A75A4550002E765 /* DS+Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DS+Colors.swift"; sourceTree = "<group>"; };
@@ -136,9 +138,18 @@
 			path = Common;
 			sourceTree = "<group>";
 		};
+		35D5611E2BEC4E2F0038B84F /* WebViewViewController */ = {
+			isa = PBXGroup;
+			children = (
+				35D5611F2BEC4E6D0038B84F /* WebViewViewController.swift */,
+			);
+			path = WebViewViewController;
+			sourceTree = "<group>";
+		};
 		4C33FF2C2A75A2560002E765 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				35D5611E2BEC4E2F0038B84F /* WebViewViewController */,
 				35C66B5C2BC1E3D6007168AB /* TextFieldComponentView */,
 				35C66B592BC1DF6C007168AB /* Extension */,
 				4C33FF2D2A75A2640002E765 /* UIColor+ext.swift */,
@@ -349,6 +360,7 @@
 				4C33FF352A75A4550002E765 /* DS+Colors.swift in Sources */,
 				35B1ED4D2BB8ACA100048E47 /* SignUpPresenter.swift in Sources */,
 				358714792BB0CB43001C45A5 /* SignInPresenter.swift in Sources */,
+				35D561202BEC4E6D0038B84F /* WebViewViewController.swift in Sources */,
 				35C66B562BC1B052007168AB /* SignInService.swift in Sources */,
 				35C8EF362BDB4D44007B2DBD /* IdentifierTextField.swift in Sources */,
 				3587147B2BB0CB56001C45A5 /* SignInCoordinator.swift in Sources */,

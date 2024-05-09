@@ -191,7 +191,7 @@ final class SignInViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        setupNavigatioBar()
+        setupNavigationBar()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -229,7 +229,7 @@ private extension SignInViewController {
     
     @objc
     func openForgotPassword() {
-        setupAlert(title: "Esqueceu a senha", message: nil)
+        setupAlert(title: "Enviamos um e-mail para recuperação de senha", message: nil)
     }
     
     @objc
@@ -252,7 +252,7 @@ private extension SignInViewController {
         interactor.openSignUp()
     }
     
-    func setupNavigatioBar() {
+    func setupNavigationBar() {
         let backButtonImage = UIImage(named: "left")
 
         navigationItem.backBarButtonItem = .init(title: "", style: .plain, target: nil, action: nil)
@@ -280,17 +280,9 @@ private extension SignInViewController {
     func setupPasswordTextField() -> UIView {
         let textFieldComponentView = TextFieldComponentView()
         textFieldComponentView.placeholder = "Senha"
-        textFieldComponentView.errorMessage = "A senha deve ter 6 caracteres ou mais"
         textFieldComponentView.isPassword = true
         textFieldComponentView.bitmask = IdentifierTextField.password.rawValue
         textFieldComponentView.delegate = self
-        
-        textFieldComponentView.validationRule = { inputText in
-            guard let text = inputText else { return false}
-            self.passwordText = text
-            return text.count <= 5 && !text.isEmpty
-        }
-        
         return textFieldComponentView
     }
     

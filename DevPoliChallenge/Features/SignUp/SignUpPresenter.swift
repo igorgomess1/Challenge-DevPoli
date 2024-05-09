@@ -1,6 +1,9 @@
+import UIKit
+
 protocol SignUpPresenting {
     func presentAlert(title: String, message: String?)
     func updateButtonState(isEnabled: Bool)
+    func openWebView(url: URL)
 }
 
 final class SignUpPresenter {
@@ -19,5 +22,9 @@ extension SignUpPresenter: SignUpPresenting {
     
     func updateButtonState(isEnabled: Bool) {
         viewController?.updateButtonState(isEnabled: isEnabled)
+    }
+    
+    func openWebView(url: URL) {
+        coordinator.openWebView(url: url)
     }
 }
