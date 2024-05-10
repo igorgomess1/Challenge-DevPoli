@@ -35,7 +35,7 @@ Temporary Items
 
 ### Swift ###
 # Xcode
-*.plist
+*Info.plist
 #
 # gitignore contributors: remember to update Global/Xcode.gitignore, Objective-C.gitignore & Swift.gitignore
 
