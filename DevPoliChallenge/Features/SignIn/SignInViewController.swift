@@ -283,6 +283,13 @@ private extension SignInViewController {
         textFieldComponentView.isPassword = true
         textFieldComponentView.bitmask = IdentifierTextField.password.rawValue
         textFieldComponentView.delegate = self
+        
+        textFieldComponentView.validationRule = { inputText in
+            guard let text = inputText else { return false}
+            self.passwordText = text
+            return false
+        }
+        
         return textFieldComponentView
     }
     

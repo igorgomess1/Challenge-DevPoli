@@ -173,7 +173,7 @@ private extension SignUpViewController {
     func setupPasswordTextField() -> UIView {
         let textFieldComponentView = TextFieldComponentView()
         textFieldComponentView.placeholder = "Senha"
-        textFieldComponentView.errorMessage = "A senha deve ter 5 caracteres ou mais"
+        textFieldComponentView.errorMessage = "A senha deve ter 6 caracteres ou mais"
         textFieldComponentView.isPassword = true
         textFieldComponentView.bitmask = IdentifierTextField.password.rawValue
         textFieldComponentView.delegate = self
@@ -181,7 +181,7 @@ private extension SignUpViewController {
         textFieldComponentView.validationRule = { inputText in
             guard let text = inputText else { return false}
             self.passwordText = text
-            return text.count < 5 && !text.isEmpty
+            return text.count < 6 && !text.isEmpty
         }
         
         return textFieldComponentView
