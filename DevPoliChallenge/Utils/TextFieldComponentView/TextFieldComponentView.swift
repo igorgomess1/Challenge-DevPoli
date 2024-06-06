@@ -1,8 +1,16 @@
 import SnapKit
 import UIKit
 
-protocol TextFieldComponentDelegate {
-    func textFieldDidChanged(isValid: Bool, bitmask: Int)
+enum TextFieldIdentifier: String, Equatable {
+    case name
+    case lastName
+    case email
+    case password
+    case confirmPassword
+}
+
+protocol TextFieldComponentDelegate: AnyObject {
+    func textFieldDidChanged(text: String?, identifier: TextFieldIdentifier, bitmask: Int)
 }
 
 final class TextFieldComponentView: UIView {
@@ -13,7 +21,7 @@ final class TextFieldComponentView: UIView {
         stackView.distribution = .equalSpacing
         return stackView
     }()
-
+    
     private lazy var textField: UITextField = {
         let textField = UITextField()
         textField.borderStyle = .roundedRect
@@ -25,17 +33,11 @@ final class TextFieldComponentView: UIView {
     
     private lazy var errorLabel: UILabel = {
         let label = UILabel()
+        label.textColor = .black
+        label.font = UIFont.systemFont(ofSize: 12)
+        label.isHidden = true
         return label
     }()
-    
-    var errorMessage: String? {
-        get {
-            return errorLabel.text
-        }
-        set {
-            errorLabel.text = newValue
-        }
-    }
     
     var placeholder: String? {
         get {
@@ -55,20 +57,38 @@ final class TextFieldComponentView: UIView {
         }
     }
     
+    private(set) var identifier: TextFieldIdentifier
+    
     var bitmask: Int = 0
     
     var validationRule: ((String?) -> Bool)?
     
-    var delegate: TextFieldComponentDelegate?
+    weak var delegate: TextFieldComponentDelegate?
     
-    init() {
+    init(identifier: TextFieldIdentifier) {
+        self.identifier = identifier
         super.init(frame: CGRect.zero)
         setupViewHierarchy()
         setupConstraints()
     }
     
     @available(*, unavailable)
-    required init?(coder: NSCoder) { nil}
+    required init?(coder: NSCoder) { nil }
+    
+    func setErrorText(text: String) {
+        errorLabel.text = text
+        containerStackView.addArrangedSubview(errorLabel)
+        errorLabel.isHidden = false
+    }
+    
+    func removeErrorText() {
+        containerStackView.removeArrangedSubview(errorLabel)
+        errorLabel.isHidden = true
+    }
+    
+    func focusTextField() {
+        textField.becomeFirstResponder()
+    }
 }
 
 private extension TextFieldComponentView {
@@ -87,41 +107,8 @@ private extension TextFieldComponentView {
         }
     }
     
-    func validateInput() -> Bool {
-        guard let rule = validationRule else {
-            return true
-        }
-        
-        if isTextFieldEmpty(textField: textField) {
-            return true
-        } else {
-            let isValid = rule(textField.text)
-            return isValid
-        }
-    }
-    
-    func isTextFieldEmpty(textField: UITextField) -> Bool {
-        if let text = textField.text?.trimmingCharacters(in: .whitespacesAndNewlines), !text.isEmpty {
-            return false
-        } else {
-            return true
-        }
-    }
-    
     @objc
     func textFieldDidChanged(_ textField: UITextField) {
-        if validateInput() {
-            self.containerStackView.addArrangedSubview(self.errorLabel)
-            self.errorLabel.isHidden = false
-
-            delegate?.textFieldDidChanged(isValid: false, bitmask: bitmask)
-        } else {
-            self.containerStackView.removeArrangedSubview(self.errorLabel)
-            self.errorLabel.isHidden = true
-
-            delegate?.textFieldDidChanged(isValid: true, bitmask: bitmask)
-        }
-
+        delegate?.textFieldDidChanged(text: textField.text, identifier: identifier, bitmask: bitmask)
     }
 }
-

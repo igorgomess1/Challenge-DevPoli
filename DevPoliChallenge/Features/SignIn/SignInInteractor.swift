@@ -1,19 +1,23 @@
 import AuthenticationServices
 
 protocol SignInInteracting {
-    func login(email: String, password: String)
+    func login()
     func openSignUp()
-    func checkErrosTexField(isValid: Bool, bitmask: Int)
     func facebookLogin()
     func handleAuthorization(
         controller: ASAuthorizationController,
         didCompleteWithAuthorization authorization: ASAuthorization
     )
+    func getEmailPassword(identifier: TextFieldIdentifier, text: String?)
 }
+
 final class SignInInteractor {
     private let presenter: SignInPresenting
     private let service: SignInServicing
     private var bistmaskResult = 0
+    
+    private var emailAccount: String?
+    private var passwordAccount: String?
     
     init(presenter: SignInPresenting, service: SignInServicing) {
         self.presenter = presenter
@@ -22,8 +26,9 @@ final class SignInInteractor {
 }
 
 extension SignInInteractor: SignInInteracting {
-    func login(email: String, password: String) {
-        service.login(email: email, password: password) { [weak self] result in
+    func login() {
+        guard let emailAccount = emailAccount, let passwordAccount = passwordAccount else { return }
+        service.login(email: emailAccount, password: passwordAccount) { [weak self] result in
             switch result {
             case .success(_):
                 self?.handledSuccess()
@@ -35,19 +40,6 @@ extension SignInInteractor: SignInInteracting {
     
     func openSignUp() {
         presenter.openSignUp()
-    }
-    
-    func checkErrosTexField(isValid: Bool, bitmask: Int) {
-        if isValid {
-            self.bistmaskResult = self.bistmaskResult | bitmask
-        } else {
-            self.bistmaskResult = self.bistmaskResult & ~bitmask
-        }
-        
-        presenter.updateButtonState(isEnabled:
-        (IdentifierTextField.email.rawValue & self.bistmaskResult != 0) &&
-        (IdentifierTextField.password.rawValue & self.bistmaskResult != 0)
-        )
     }
     
     func facebookLogin() {
@@ -77,6 +69,14 @@ extension SignInInteractor: SignInInteracting {
             case .failure(let error):
                 self?.handledFailure(error: error)
             }
+        }
+    }
+    
+    func getEmailPassword(identifier: TextFieldIdentifier, text: String?) {
+        if identifier == .email {
+            self.emailAccount = text ?? " "
+        } else {
+            self.passwordAccount = text ?? " "
         }
     }
 }

@@ -4,13 +4,12 @@ import SnapKit
 protocol SignUpDisplaying: AnyObject {
     func setupAlert(title: String, message: String?)
     func updateButtonState(isEnabled: Bool)
+    func displayTextFieldError(identifier: TextFieldIdentifier, text: String)
+    func shouldTextFieldError(identifier: TextFieldIdentifier)
 }
 
 final class SignUpViewController: UIViewController {
     private let interactor: SignUpInteractor
-    
-    private lazy var emailText: String? = " "
-    private var passwordText: String?
     
     private lazy var titleText: UILabel = {
         let label = UILabel()
@@ -120,85 +119,52 @@ private extension SignUpViewController {
     
     @objc
     func createAccount() {
-        guard let email = emailText, let password = passwordText else { return }
-        interactor.createAccount(email: email, password: password)
+        interactor.createAccount()
     }
     
     func setupFirstNameTextField() -> UIView {
-        let textFieldComponentView = TextFieldComponentView()
+        let textFieldComponentView = TextFieldComponentView(identifier: .name)
         textFieldComponentView.placeholder = "Primeiro nome"
-        textFieldComponentView.errorMessage = "Necessário preenchimento"
         textFieldComponentView.bitmask = IdentifierTextField.firstName.rawValue
         textFieldComponentView.delegate = self
-        
-        textFieldComponentView.validationRule = { inputText in
-            guard let text = inputText else { return false}
-            return text.isEmpty
-        }
         
         return textFieldComponentView
     }
     
     func setupLastNameTextField() -> UIView {
-        let textFieldComponentView = TextFieldComponentView()
+        let textFieldComponentView = TextFieldComponentView(identifier: .lastName)
         textFieldComponentView.placeholder = "Útimo nome"
-        textFieldComponentView.errorMessage = "Necessário preenchimento"
         textFieldComponentView.bitmask = IdentifierTextField.lastName.rawValue
         textFieldComponentView.delegate = self
-        
-        textFieldComponentView.validationRule = { inputText in
-            guard let text = inputText else { return false}
-            return text.isEmpty
-        }
         
         return textFieldComponentView
     }
     
     func setupEmailTextField() -> UIView {
-        let textFieldComponentView = TextFieldComponentView()
+        let textFieldComponentView = TextFieldComponentView(identifier: .email)
         textFieldComponentView.placeholder = "Email"
-        textFieldComponentView.errorMessage = "Email inválido"
         textFieldComponentView.bitmask = IdentifierTextField.email.rawValue
         textFieldComponentView.delegate = self
-        
-        textFieldComponentView.validationRule = { inputText in
-            guard let text = inputText else { return false}
-            self.emailText = text
-            return !text.isValidEmail() && !text.isEmpty
-        }
         
         return textFieldComponentView
     }
     
     func setupPasswordTextField() -> UIView {
-        let textFieldComponentView = TextFieldComponentView()
+        let textFieldComponentView = TextFieldComponentView(identifier: .password)
         textFieldComponentView.placeholder = "Senha"
-        textFieldComponentView.errorMessage = "A senha deve ter 6 caracteres ou mais"
         textFieldComponentView.isPassword = true
         textFieldComponentView.bitmask = IdentifierTextField.password.rawValue
         textFieldComponentView.delegate = self
-        
-        textFieldComponentView.validationRule = { inputText in
-            guard let text = inputText else { return false}
-            self.passwordText = text
-            return text.count < 6 && !text.isEmpty
-        }
         
         return textFieldComponentView
     }
     
     func setupValidationPassword() -> UIView {
-        let textFieldComponentView = TextFieldComponentView()
+        let textFieldComponentView = TextFieldComponentView(identifier: .confirmPassword)
         textFieldComponentView.placeholder = "Confirmar senha"
-        textFieldComponentView.errorMessage = "A senha não confere"
         textFieldComponentView.isPassword = true
         textFieldComponentView.delegate = self
         textFieldComponentView.bitmask = IdentifierTextField.validationPassword.rawValue
-        
-        textFieldComponentView.validationRule = { inputText in
-            guard let text = inputText else { return false}
-            return self.passwordText != text && !text.isEmpty
-        }
         
         return textFieldComponentView
     }
@@ -270,10 +236,28 @@ extension SignUpViewController: SignUpDisplaying {
         createAccountButton.isEnabled = isEnabled
         createAccountButton.backgroundColor = isEnabled ? DesignSystem.Colors.accent : UIColor.gray
     }
+    
+    func displayTextFieldError(identifier: TextFieldIdentifier, text: String) {
+        for view in containerStackView.arrangedSubviews {
+            if let textFieldView = view as? TextFieldComponentView, textFieldView.identifier == identifier {
+                textFieldView.setErrorText(text: text)
+                break
+            }
+        }
+    }
+    
+    func shouldTextFieldError(identifier: TextFieldIdentifier) {
+        for view in containerStackView.arrangedSubviews {
+            if let textFieldView = view as? TextFieldComponentView, textFieldView.identifier == identifier {
+                textFieldView.removeErrorText()
+                break
+            }
+        }
+    }
 }
 
 extension SignUpViewController: TextFieldComponentDelegate {
-    func textFieldDidChanged(isValid: Bool, bitmask: Int) {
-        interactor.checkErrosTexField(isValid: isValid, bitmask: bitmask)
+    func textFieldDidChanged(text: String?, identifier: TextFieldIdentifier, bitmask: Int) {
+        interactor.textFieldDidChanged(text: text, identifier: identifier, bitmask: bitmask)
     }
 }

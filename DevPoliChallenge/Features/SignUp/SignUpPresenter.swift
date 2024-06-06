@@ -4,6 +4,8 @@ protocol SignUpPresenting {
     func presentAlert(title: String, message: String?)
     func updateButtonState(isEnabled: Bool)
     func openWebView(url: URL)
+    func displayError(identifier: TextFieldIdentifier, text: String)
+    func removeError(identifier: TextFieldIdentifier)
 }
 
 final class SignUpPresenter {
@@ -26,5 +28,13 @@ extension SignUpPresenter: SignUpPresenting {
     
     func openWebView(url: URL) {
         coordinator.openWebView(url: url)
+    }
+    
+    func displayError(identifier: TextFieldIdentifier, text: String) {
+        viewController?.displayTextFieldError(identifier: identifier, text: text)
+    }
+    
+    func removeError(identifier: TextFieldIdentifier) {
+        viewController?.shouldTextFieldError(identifier: identifier)
     }
 }

@@ -1,7 +1,7 @@
 protocol SignInPresenting {
     func openSignUp()
     func presentAlert(title: String, message: String?)
-    func updateButtonState(isEnabled: Bool)
+    func displayError(identifier: TextFieldIdentifier, text: String)
 }
 final class SignInPresenter {
     private let coordinator: SignInCoordinating
@@ -21,8 +21,8 @@ extension SignInPresenter: SignInPresenting {
         viewController?.setupAlert(title: title, message: message)
     }
     
-    func updateButtonState(isEnabled: Bool) {
-        viewController?.updateButtonState(isEnabled: isEnabled)
+    func displayError(identifier: TextFieldIdentifier, text: String) {
+        viewController?.displayTextFieldError(identifier: identifier, text: text)
     }
 }
 

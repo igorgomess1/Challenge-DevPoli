@@ -4,7 +4,7 @@ import AuthenticationServices
 
 protocol SignInDisplaying: AnyObject {
     func setupAlert(title: String, message: String?)
-    func updateButtonState(isEnabled: Bool)
+    func displayTextFieldError(identifier: TextFieldIdentifier, text: String)
 }
 
 final class SignInViewController: UIViewController {
@@ -54,7 +54,7 @@ final class SignInViewController: UIViewController {
         let button = UIButton()
         button.setTitle("Entrar", for: .normal)
         button.setTitleColor(.white, for: .normal)
-        button.backgroundColor = UIColor.gray
+        button.backgroundColor = DesignSystem.Colors.accent
         button.layer.cornerRadius = 10.0
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16.0)
         button.isEnabled = true
@@ -223,8 +223,7 @@ private extension SignInViewController {
     
     @objc
     func loginAccount() {
-        guard let email = emailText, let password = passwordText else { return }
-        interactor.login(email: email, password: password)
+        interactor.login()
     }
     
     @objc
@@ -262,23 +261,16 @@ private extension SignInViewController {
     }
     
     func setupEmailTextField() -> UIView {
-        let textFieldComponentView = TextFieldComponentView()
+        let textFieldComponentView = TextFieldComponentView(identifier: .email)
         textFieldComponentView.placeholder = "Email"
-        textFieldComponentView.errorMessage = "Informe o e-mail para continuar"
         textFieldComponentView.bitmask = IdentifierTextField.email.rawValue
         textFieldComponentView.delegate = self
-        
-        textFieldComponentView.validationRule = { inputText in
-            guard let text = inputText else { return false}
-            self.emailText = text
-            return !text.isValidEmail() && !text.isEmpty
-        }
         
         return textFieldComponentView
     }
     
     func setupPasswordTextField() -> UIView {
-        let textFieldComponentView = TextFieldComponentView()
+        let textFieldComponentView = TextFieldComponentView(identifier: .password)
         textFieldComponentView.placeholder = "Senha"
         textFieldComponentView.isPassword = true
         textFieldComponentView.bitmask = IdentifierTextField.password.rawValue
@@ -461,15 +453,13 @@ extension SignInViewController: SignInDisplaying {
         self.present(alertMessagePopUpBox, animated: true)
     }
     
-    func updateButtonState(isEnabled: Bool) {
-        enterButton.isEnabled = isEnabled
-        enterButton.backgroundColor = isEnabled ? DesignSystem.Colors.accent : UIColor.gray
-    }
-}
-
-extension SignInViewController: TextFieldComponentDelegate {
-    func textFieldDidChanged(isValid: Bool, bitmask: Int) {
-        interactor.checkErrosTexField(isValid: isValid, bitmask: bitmask)
+    func displayTextFieldError(identifier: TextFieldIdentifier, text: String) {
+        for view in informationsContainerView.subviews {
+            if let textFieldView = view as? TextFieldComponentView, textFieldView.identifier == .email {
+                textFieldView.focusTextField()
+                break
+            }
+        }
     }
 }
 
@@ -489,5 +479,11 @@ extension SignInViewController: ASAuthorizationControllerDelegate {
             controller: controller,
             didCompleteWithAuthorization: authorization
         )
+    }
+}
+
+extension SignInViewController: TextFieldComponentDelegate {
+    func textFieldDidChanged(text: String?, identifier: TextFieldIdentifier, bitmask: Int) {
+        interactor.getEmailPassword(identifier: identifier, text: text)
     }
 }
