@@ -13,7 +13,7 @@ final class SignUpInteractor {
     private var emailAccount: String?
     private var passwordAccount: String?
     
-    private var bistmaskResult = 0
+    private var bitmaskResult = 0
     
     init(presenter: SignUpPresenting, service: SignUpServicing) {
         self.presenter = presenter
@@ -110,17 +110,17 @@ private extension SignUpInteractor {
     
     func checkErrosTexField(isValid: Bool, bitmask: Int) {
         if isValid {
-            self.bistmaskResult = self.bistmaskResult | bitmask
+            self.bitmaskResult = self.bitmaskResult | bitmask
         } else {
-            self.bistmaskResult = self.bistmaskResult & ~bitmask
+            self.bitmaskResult = self.bitmaskResult & ~bitmask
         }
         
         presenter.updateButtonState(isEnabled:
-        (IdentifierTextField.firstName.rawValue & self.bistmaskResult != 0) &&
-        (IdentifierTextField.lastName.rawValue & self.bistmaskResult != 0) &&
-        (IdentifierTextField.email.rawValue & self.bistmaskResult != 0) &&
-        (IdentifierTextField.password.rawValue & self.bistmaskResult != 0) &&
-        (IdentifierTextField.validationPassword.rawValue & self.bistmaskResult != 0)
+        (IdentifierTextField.firstName.rawValue & self.bitmaskResult != 0) &&
+        (IdentifierTextField.lastName.rawValue & self.bitmaskResult != 0) &&
+        (IdentifierTextField.email.rawValue & self.bitmaskResult != 0) &&
+        (IdentifierTextField.password.rawValue & self.bitmaskResult != 0) &&
+        (IdentifierTextField.validationPassword.rawValue & self.bitmaskResult != 0)
         )
     }
 }

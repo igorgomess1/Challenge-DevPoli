@@ -1,24 +1,20 @@
 import AuthenticationServices
 
 protocol SignInInteracting {
-    func login()
+    func login(email: String?, password: String?)
     func openSignUp()
     func facebookLogin()
     func handleAuthorization(
         controller: ASAuthorizationController,
         didCompleteWithAuthorization authorization: ASAuthorization
     )
-    func getEmailPassword(identifier: TextFieldIdentifier, text: String?)
 }
 
 final class SignInInteractor {
     private let presenter: SignInPresenting
     private let service: SignInServicing
-    private var bistmaskResult = 0
-    
-    private var emailAccount: String?
-    private var passwordAccount: String?
-    
+    private var bitmaskResult = 0
+        
     init(presenter: SignInPresenting, service: SignInServicing) {
         self.presenter = presenter
         self.service = service
@@ -26,15 +22,11 @@ final class SignInInteractor {
 }
 
 extension SignInInteractor: SignInInteracting {
-    func login() {
-        guard let emailAccount = emailAccount, let passwordAccount = passwordAccount else { return }
-        service.login(email: emailAccount, password: passwordAccount) { [weak self] result in
-            switch result {
-            case .success(_):
-                self?.handledSuccess()
-            case .failure(let error):
-                self?.handledFailure(error: error)
-            }
+    func login(email: String?, password: String?) {
+        if let email = email, !email.isEmpty, let password = password {
+            login(email: email, password: password)
+        } else if email == nil || email?.isEmpty == true {
+            presenter.presentAlert(title: "Informe o e-mail para continuar", message: nil)
         }
     }
     
@@ -45,9 +37,7 @@ extension SignInInteractor: SignInInteracting {
     func facebookLogin() {
         service.loginWithFacebook { [weak self] result in
             switch result {
-            case .success(let success):
-                let email = success.0
-                print(email)
+            case .success(_):
                 self?.handledSuccess()
             case .failure(let failure):
                 self?.handledFailure(error: failure)
@@ -71,17 +61,20 @@ extension SignInInteractor: SignInInteracting {
             }
         }
     }
-    
-    func getEmailPassword(identifier: TextFieldIdentifier, text: String?) {
-        if identifier == .email {
-            self.emailAccount = text ?? " "
-        } else {
-            self.passwordAccount = text ?? " "
-        }
-    }
 }
 
 private extension SignInInteractor {
+    func login(email: String, password: String) {
+        service.login(email: email, password: password) { [weak self] result in
+            switch result {
+            case .success(_):
+                self?.handledSuccess()
+            case .failure(let error):
+                self?.handledFailure(error: error)
+            }
+        }
+    }
+    
     func handledSuccess() {
         presenter.presentAlert(title: "Login Realizado com Sucesso", message: nil)
     }
@@ -89,8 +82,8 @@ private extension SignInInteractor {
     func handledFailure(error: Error) {
         print(error.localizedDescription)
         presenter.presentAlert(
-            title: "Email ou Senha incorretos",
-            message: "Ocorreu um erro ao realizar o login, tente novamente mais tarde"
+            title: "Erro ao realizar login",
+            message: "Ocorreu um erro ao realizar o login, tente novamente mais tarde."
         )
     }
 }

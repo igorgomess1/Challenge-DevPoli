@@ -9,7 +9,7 @@ protocol SignInDisplaying: AnyObject {
 
 final class SignInViewController: UIViewController {
     private let interactor: SignInInteracting
-    private lazy var emailText: String? = " "
+    private var emailText: String?
     private var passwordText: String?
     
     private lazy var headerContainerView = UIView()
@@ -223,7 +223,7 @@ private extension SignInViewController {
     
     @objc
     func loginAccount() {
-        interactor.login()
+        interactor.login(email: emailText, password: passwordText)
     }
     
     @objc
@@ -448,7 +448,7 @@ extension SignInViewController: SignInDisplaying {
         let okButton = UIAlertAction(title: "Ok", style: .default) {  action in
             self.navigationController?.popViewController(animated: true)
         }
-        
+        displayTextFieldError(identifier: .email, text: "Necessário preenchimento")
         alertMessagePopUpBox.addAction(okButton)
         self.present(alertMessagePopUpBox, animated: true)
     }
@@ -484,6 +484,10 @@ extension SignInViewController: ASAuthorizationControllerDelegate {
 
 extension SignInViewController: TextFieldComponentDelegate {
     func textFieldDidChanged(text: String?, identifier: TextFieldIdentifier, bitmask: Int) {
-        interactor.getEmailPassword(identifier: identifier, text: text)
+        if identifier == .email {
+            emailText = text
+        } else {
+            passwordText = text
+        }
     }
 }
