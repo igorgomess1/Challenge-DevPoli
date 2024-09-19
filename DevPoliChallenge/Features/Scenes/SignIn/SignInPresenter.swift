@@ -2,6 +2,7 @@ protocol SignInPresenting {
     func openSignUp()
     func presentAlert(title: String, message: String?)
     func displayError(identifier: TextFieldIdentifier, text: String)
+    func openVoiceRecording()
 }
 final class SignInPresenter {
     private let coordinator: SignInCoordinating
@@ -23,6 +24,10 @@ extension SignInPresenter: SignInPresenting {
     
     func displayError(identifier: TextFieldIdentifier, text: String) {
         viewController?.displayTextFieldError(identifier: identifier, text: text)
+    }
+    
+    func openVoiceRecording() {
+        coordinator.openVoiceRecording()
     }
 }
 

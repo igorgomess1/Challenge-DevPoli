@@ -1,14 +1,13 @@
 import UIKit
-import SnapKit
 import AuthenticationServices
+import SnapKit
 
 protocol SignInDisplaying: AnyObject {
     func setupAlert(title: String, message: String?)
     func displayTextFieldError(identifier: TextFieldIdentifier, text: String)
 }
 
-final class SignInViewController: UIViewController {
-    private let interactor: SignInInteracting
+final class SignInViewController: ViewController<SignInInteracting, UIView> {
     private var emailText: String?
     private var passwordText: String?
     
@@ -157,7 +156,7 @@ final class SignInViewController: UIViewController {
         stackView.spacing = .zero
         return stackView
     }()
-        
+    
     private lazy var noAccountText: UILabel = {
         let label = UILabel()
         label.text = "Não tem conta? Criar Conta"
@@ -174,17 +173,11 @@ final class SignInViewController: UIViewController {
         return label
     }()
     
-    init(interactor: SignInInteracting) {
-        self.interactor = interactor
-        super.init(nibName: nil, bundle: nil)
-    }
-    
-    required init?(coder: NSCoder) { nil }
-        
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupViewHierarchy()
-        setupConstraints()
+        //        buildViewHierarchy()
+        //        setupConstraints()
+        buildLayout()
         view.backgroundColor = .white
     }
     
@@ -201,108 +194,7 @@ final class SignInViewController: UIViewController {
         view.addGestureRecognizer(tap)
     }
     
-    @objc
-    func dismissKeyboard(_ view: UITapGestureRecognizer) {
-        self.view.endEditing(true)
-    }
-}
-
-private extension SignInViewController {
-    func AddColorInPartText(_ text: String, textToColor: String) -> NSMutableAttributedString {
-        guard let range = text.range(of: textToColor) else { return .init()}
-        
-        let attributedSubstring = NSMutableAttributedString(string: String(text))
-        
-        attributedSubstring.addAttribute(
-            .foregroundColor, value: DesignSystem.Colors.primary,
-            range: NSRange(range, in: text)
-        )
-        
-        return attributedSubstring
-    }
-    
-    @objc
-    func loginAccount() {
-        interactor.login(email: emailText, password: passwordText)
-    }
-    
-    @objc
-    func openForgotPassword() {
-        setupAlert(title: "Enviamos um e-mail para recuperação de senha", message: nil)
-    }
-    
-    @objc
-    func openLoginWithFacebook() {
-        interactor.facebookLogin()
-    }
-    
-    @objc
-    func openLoginWithApple() {
-        let authorizationController = ASAuthorizationController(
-            authorizationRequests: [createAppleIDAuthorizationRequest()]
-        )
-        authorizationController.delegate = self
-        
-        authorizationController.performRequests()
-    }
-    
-    @objc
-    func openSignUp() {
-        interactor.openSignUp()
-    }
-    
-    func setupNavigationBar() {
-        let backButtonImage = UIImage(named: "left")
-
-        navigationItem.backBarButtonItem = .init(title: "", style: .plain, target: nil, action: nil)
-        
-        navigationController?.navigationBar.backIndicatorImage = backButtonImage
-        navigationController?.navigationBar.backIndicatorTransitionMaskImage = backButtonImage
-    }
-    
-    func setupEmailTextField() -> UIView {
-        let textFieldComponentView = TextFieldComponentView(identifier: .email)
-        textFieldComponentView.placeholder = "Email"
-        textFieldComponentView.bitmask = IdentifierTextField.email.rawValue
-        textFieldComponentView.delegate = self
-        
-        return textFieldComponentView
-    }
-    
-    func setupPasswordTextField() -> UIView {
-        let textFieldComponentView = TextFieldComponentView(identifier: .password)
-        textFieldComponentView.placeholder = "Senha"
-        textFieldComponentView.isPassword = true
-        textFieldComponentView.bitmask = IdentifierTextField.password.rawValue
-        textFieldComponentView.delegate = self
-        
-        textFieldComponentView.validationRule = { inputText in
-            guard let text = inputText else { return false}
-            self.passwordText = text
-            return false
-        }
-        
-        return textFieldComponentView
-    }
-    
-    func createAppleIDAuthorizationRequest() -> ASAuthorizationAppleIDRequest {
-        let appleIDProvider = ASAuthorizationAppleIDProvider()
-        let request = appleIDProvider.createRequest()
-        request.requestedScopes = [.fullName, .email]
-        return request
-    }
-}
-
-extension SignInViewController: ASAuthorizationControllerPresentationContextProviding {
-    func presentationAnchor(for controller: ASAuthorizationController) -> ASPresentationAnchor {
-        guard let window = view.window else { return .init()}
-        
-        return window
-    }
-}
-
-extension SignInViewController {
-    func setupViewHierarchy() {
+    override func buildViewHierarchy() {
         view.addSubview(headerContainerView)
         headerContainerView.addSubview(headerTitle)
         headerContainerView.addSubview(descriptionTitle)
@@ -329,7 +221,7 @@ extension SignInViewController {
         createAccountStackView.addArrangedSubview(noAccountText)
     }
     
-    func setupConstraints() {
+    override func setupConstraints() {
         headerContainerView.snp.makeConstraints {
             $0.top.equalTo(view.safeAreaLayoutGuide).inset(50)
             $0.leading.trailing.equalToSuperview().inset(24)
@@ -435,6 +327,105 @@ extension SignInViewController {
             $0.trailing.leading.equalToSuperview().inset(24)
             $0.bottom.lessThanOrEqualTo(view.safeAreaLayoutGuide)
         }
+    }
+    
+    @objc
+    func dismissKeyboard(_ view: UITapGestureRecognizer) {
+        self.view.endEditing(true)
+    }
+}
+
+private extension SignInViewController {
+    func AddColorInPartText(_ text: String, textToColor: String) -> NSMutableAttributedString {
+        guard let range = text.range(of: textToColor) else { return .init()}
+        
+        let attributedSubstring = NSMutableAttributedString(string: String(text))
+        
+        attributedSubstring.addAttribute(
+            .foregroundColor, value: DesignSystem.Colors.primary,
+            range: NSRange(range, in: text)
+        )
+        
+        return attributedSubstring
+    }
+    
+    @objc
+    func loginAccount() {
+        interactor.login(email: emailText, password: passwordText)
+    }
+    
+    @objc
+    func openForgotPassword() {
+        setupAlert(title: "Enviamos um e-mail para recuperação de senha", message: nil)
+    }
+    
+    @objc
+    func openLoginWithFacebook() {
+        interactor.facebookLogin()
+    }
+    
+    @objc
+    func openLoginWithApple() {
+        let authorizationController = ASAuthorizationController(
+            authorizationRequests: [createAppleIDAuthorizationRequest()]
+        )
+        authorizationController.delegate = self
+        
+        authorizationController.performRequests()
+    }
+    
+    @objc
+    func openSignUp() {
+        interactor.openSignUp()
+    }
+    
+    func setupNavigationBar() {
+        let backButtonImage = UIImage(named: "left")
+        
+        navigationItem.backBarButtonItem = .init(title: "", style: .plain, target: nil, action: nil)
+        
+        navigationController?.navigationBar.backIndicatorImage = backButtonImage
+        navigationController?.navigationBar.backIndicatorTransitionMaskImage = backButtonImage
+    }
+    
+    func setupEmailTextField() -> UIView {
+        let textFieldComponentView = TextFieldComponentView(identifier: .email)
+        textFieldComponentView.placeholder = "Email"
+        textFieldComponentView.bitmask = IdentifierTextField.email.rawValue
+        textFieldComponentView.delegate = self
+        
+        return textFieldComponentView
+    }
+    
+    func setupPasswordTextField() -> UIView {
+        let textFieldComponentView = TextFieldComponentView(identifier: .password)
+        textFieldComponentView.placeholder = "Senha"
+        textFieldComponentView.isPassword = true
+        textFieldComponentView.bitmask = IdentifierTextField.password.rawValue
+        textFieldComponentView.delegate = self
+        
+        textFieldComponentView.validationRule = { inputText in
+            guard let text = inputText else { return false}
+            self.passwordText = text
+            return false
+        }
+        
+        return textFieldComponentView
+    }
+    
+    func createAppleIDAuthorizationRequest() -> ASAuthorizationAppleIDRequest {
+        let appleIDProvider = ASAuthorizationAppleIDProvider()
+        let request = appleIDProvider.createRequest()
+        request.requestedScopes = [.fullName, .email]
+        return request
+    }
+}
+
+extension SignInViewController: ASAuthorizationControllerPresentationContextProviding {
+    func presentationAnchor(for controller: ASAuthorizationController) -> ASPresentationAnchor {
+        guard let window = view.window else { return .init()}
+        
+        return window
     }
 }
 

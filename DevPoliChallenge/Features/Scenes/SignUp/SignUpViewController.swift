@@ -16,6 +16,7 @@ final class SignUpViewController: UIViewController {
         label.text = "Cria sua conta e comece a gerenciar sua vida financeira"
         label.textColor = DesignSystem.Colors.silver
         label.numberOfLines = .zero
+        label.textAlignment = .center
         return label
     }()
     
@@ -80,6 +81,10 @@ final class SignUpViewController: UIViewController {
         setupViewHierarchy()
         setupConstraints()
         view.backgroundColor = .white
+        
+        let uiTapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        
+        view.addGestureRecognizer(uiTapGesture)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -120,6 +125,11 @@ private extension SignUpViewController {
     @objc
     func createAccount() {
         interactor.createAccount()
+    }
+    
+    @objc
+    func dismissKeyboard() {
+        view.endEditing(true)
     }
     
     func setupFirstNameTextField() -> UIView {

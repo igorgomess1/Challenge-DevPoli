@@ -8,6 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		2DB55BCB84A53DD3582A15A5 /* Pods_DevPoliChallenge.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 64CB0E725F428065D562C05C /* Pods_DevPoliChallenge.framework */; };
+		35475B5B2C6C082A00FBE1DD /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35475B5A2C6C082A00FBE1DD /* ViewController.swift */; };
+		35673A342C19CF040052D827 /* Api.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35673A332C19CF040052D827 /* Api.swift */; };
+		3567B9932C9B78B20079B3A0 /* VoiceRecordingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3567B9922C9B78B20079B3A0 /* VoiceRecordingViewController.swift */; };
+		3567B9972C9B7A6D0079B3A0 /* VoiceRecordingInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3567B9962C9B7A6D0079B3A0 /* VoiceRecordingInteractor.swift */; };
+		3567B9992C9B83D20079B3A0 /* VoiceRecordingFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3567B9982C9B83D20079B3A0 /* VoiceRecordingFactory.swift */; };
 		358714752BB0CB13001C45A5 /* SignInFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358714742BB0CB13001C45A5 /* SignInFactory.swift */; };
 		358714772BB0CB27001C45A5 /* SignInInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358714762BB0CB27001C45A5 /* SignInInteractor.swift */; };
 		358714792BB0CB43001C45A5 /* SignInPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358714782BB0CB43001C45A5 /* SignInPresenter.swift */; };
@@ -35,6 +40,11 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		35475B5A2C6C082A00FBE1DD /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		35673A332C19CF040052D827 /* Api.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Api.swift; sourceTree = "<group>"; };
+		3567B9922C9B78B20079B3A0 /* VoiceRecordingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoiceRecordingViewController.swift; sourceTree = "<group>"; };
+		3567B9962C9B7A6D0079B3A0 /* VoiceRecordingInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoiceRecordingInteractor.swift; sourceTree = "<group>"; };
+		3567B9982C9B83D20079B3A0 /* VoiceRecordingFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoiceRecordingFactory.swift; sourceTree = "<group>"; };
 		358714742BB0CB13001C45A5 /* SignInFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInFactory.swift; sourceTree = "<group>"; };
 		358714762BB0CB27001C45A5 /* SignInInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInInteractor.swift; sourceTree = "<group>"; };
 		358714782BB0CB43001C45A5 /* SignInPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInPresenter.swift; sourceTree = "<group>"; };
@@ -86,6 +96,42 @@
 				64CB0E725F428065D562C05C /* Pods_DevPoliChallenge.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		35475B592C6C080A00FBE1DD /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				35475B5A2C6C082A00FBE1DD /* ViewController.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		35673A322C19CEF20052D827 /* Api */ = {
+			isa = PBXGroup;
+			children = (
+				35673A332C19CF040052D827 /* Api.swift */,
+			);
+			path = Api;
+			sourceTree = "<group>";
+		};
+		3567B9902C9B77C70079B3A0 /* Scenes */ = {
+			isa = PBXGroup;
+			children = (
+				3567B9912C9B77D70079B3A0 /* VoiceRecording */,
+				358714732BB0CADC001C45A5 /* SignIn */,
+				358714722BB0CAA8001C45A5 /* SignUp */,
+			);
+			path = Scenes;
+			sourceTree = "<group>";
+		};
+		3567B9912C9B77D70079B3A0 /* VoiceRecording */ = {
+			isa = PBXGroup;
+			children = (
+				3567B9922C9B78B20079B3A0 /* VoiceRecordingViewController.swift */,
+				3567B9962C9B7A6D0079B3A0 /* VoiceRecordingInteractor.swift */,
+				3567B9982C9B83D20079B3A0 /* VoiceRecordingFactory.swift */,
+			);
+			path = VoiceRecording;
 			sourceTree = "<group>";
 		};
 		358714722BB0CAA8001C45A5 /* SignUp */ = {
@@ -188,6 +234,7 @@
 		4C3862A22A758819005C9C3B /* DevPoliChallenge */ = {
 			isa = PBXGroup;
 			children = (
+				35475B592C6C080A00FBE1DD /* Components */,
 				3595E5212BDBFB7100B665B9 /* DevPoliChallenge.entitlements */,
 				35C8EF342BDB4CF8007B2DBD /* Common */,
 				4C33FF2F2A75A3810002E765 /* DesignSystem */,
@@ -222,8 +269,8 @@
 		4C3862B92A758A98005C9C3B /* Features */ = {
 			isa = PBXGroup;
 			children = (
-				358714732BB0CADC001C45A5 /* SignIn */,
-				358714722BB0CAA8001C45A5 /* SignUp */,
+				3567B9902C9B77C70079B3A0 /* Scenes */,
+				35673A322C19CEF20052D827 /* Api */,
 			);
 			path = Features;
 			sourceTree = "<group>";
@@ -360,20 +407,25 @@
 				4C33FF352A75A4550002E765 /* DS+Colors.swift in Sources */,
 				35B1ED4D2BB8ACA100048E47 /* SignUpPresenter.swift in Sources */,
 				358714792BB0CB43001C45A5 /* SignInPresenter.swift in Sources */,
+				3567B9972C9B7A6D0079B3A0 /* VoiceRecordingInteractor.swift in Sources */,
+				35475B5B2C6C082A00FBE1DD /* ViewController.swift in Sources */,
 				35D561202BEC4E6D0038B84F /* WebViewViewController.swift in Sources */,
 				35C66B562BC1B052007168AB /* SignInService.swift in Sources */,
 				35C8EF362BDB4D44007B2DBD /* IdentifierTextField.swift in Sources */,
+				3567B9932C9B78B20079B3A0 /* VoiceRecordingViewController.swift in Sources */,
 				3587147B2BB0CB56001C45A5 /* SignInCoordinator.swift in Sources */,
 				35C66B5E2BC1E3F1007168AB /* TextFieldComponentView.swift in Sources */,
 				35C66B5B2BC1DF84007168AB /* String+Extension.swift in Sources */,
 				4C33FF332A75A3F40002E765 /* DS.swift in Sources */,
 				35B1ED532BB8ACD100048E47 /* SignUpViewController.swift in Sources */,
 				358714772BB0CB27001C45A5 /* SignInInteractor.swift in Sources */,
+				35673A342C19CF040052D827 /* Api.swift in Sources */,
 				4C33FF2E2A75A2640002E765 /* UIColor+ext.swift in Sources */,
 				35C66B582BC1B0C7007168AB /* SignUpService.swift in Sources */,
 				4C3862A42A758819005C9C3B /* AppDelegate.swift in Sources */,
 				35B1ED4F2BB8ACB000048E47 /* SignUpInteractor.swift in Sources */,
 				4C3862A62A758819005C9C3B /* SceneDelegate.swift in Sources */,
+				3567B9992C9B83D20079B3A0 /* VoiceRecordingFactory.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -521,6 +573,7 @@
 				INFOPLIST_FILE = DevPoliChallenge/Resources/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "DevPoli Challenge";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Talk with IA";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen.storyboard;
 				INFOPLIST_KEY_UIMainStoryboardFile = "";
@@ -557,6 +610,7 @@
 				INFOPLIST_FILE = DevPoliChallenge/Resources/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "DevPoli Challenge";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Talk with IA";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen.storyboard;
 				INFOPLIST_KEY_UIMainStoryboardFile = "";

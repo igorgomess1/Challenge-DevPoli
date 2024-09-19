@@ -76,7 +76,8 @@ private extension SignInInteractor {
     }
     
     func handledSuccess() {
-        presenter.presentAlert(title: "Login Realizado com Sucesso", message: nil)
+        presenter.openVoiceRecording()
+//        presenter.presentAlert(title: "Login Realizado com Sucesso", message: nil)
     }
     
     func handledFailure(error: Error) {
